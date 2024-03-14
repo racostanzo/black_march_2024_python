@@ -1,19 +1,27 @@
 import os
 
-def generate_file_info():
+def get_files_info(directory):
     files_info = []
-    for filename in os.listdir():
-        if os.path.isfile(filename):
-            file_stat = os.stat(filename)
+    # Get list of files in the directory
+    files = os.listdir(directory)
+    for file_name in files:
+        file_path = os.path.join(directory, file_name)
+        # Check if it's a file (not a directory)
+        if os.path.isfile(file_path):
+            # Get file size
+            size = os.path.getsize(file_path)
+            # Create a dictionary with file information
             file_info = {
-                "filename": filename,
-                "size": file_stat.st_size,
-                "last_modified": file_stat.st_mtime
+                "name": file_name,
+                "size": size
             }
+            # Add the dictionary to the list
             files_info.append(file_info)
     return files_info
 
 if __name__ == "__main__":
-    files_info = generate_file_info()
+    current_directory = os.getcwd()  # Get the current working directory
+    files_info = get_files_info(current_directory)
+    print("List of files in the current directory:")
     for file_info in files_info:
         print(file_info)
